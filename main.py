@@ -5,7 +5,7 @@ from PIL import Image, ImageFilter
 
 # task 1
 try:
-    image = matplotlib.image.imread("lizard.jpg")
+    image = matplotlib.image.imread("fish.jpg")
 except:
     print("final not found")
     exit()
@@ -105,8 +105,8 @@ middle_value_y = []
 
 
 def doublethreshold(iy, ix):
-    lower_threshold = 75
-    upper_threshold = 150
+    lower_threshold = 50
+    upper_threshold = 100
     lower_value = 150
     upper_value = 255
 
