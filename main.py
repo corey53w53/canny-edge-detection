@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageFilter
 
 # task 1
-image = matplotlib.image.imread("leaf.jpg")
+image = matplotlib.image.imread("lizard.jpg")
 height = image.shape[0]
 width = image.shape[1]
 intensities = (0.299 * image[:, :, 0]) + \
@@ -89,6 +89,31 @@ def nmsuppression(iy, ix):
 vnmsuppression = np.vectorize(nmsuppression)
 
 vnmsuppression(y_vals, x_vals)
+
+plt.imshow(final_gradient)
+plt.axis("off")
+plt.show()
+
+# task 5
+
+
+def doublethreshold(iy, ix):
+    lower_threshold = 75
+    upper_threshold = 150
+    lower_value = 150
+    upper_value = 255
+
+    if final_gradient[iy][ix][0] < lower_threshold:
+        final_gradient[iy][ix].fill(0)
+    elif final_gradient[iy][ix][0] < upper_threshold:
+        final_gradient[iy][ix].fill(lower_value)
+    else:
+        final_gradient[iy][ix].fill(upper_value)
+
+
+vdoublethreshold = np.vectorize(doublethreshold)
+
+vdoublethreshold(y_vals, x_vals)
 
 plt.imshow(final_gradient)
 plt.axis("off")
