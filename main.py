@@ -4,7 +4,11 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageFilter
 
 # task 1
-image = matplotlib.image.imread("lizard.jpg")
+try:
+    image = matplotlib.image.imread("lizard.jpg")
+except:
+    print("final not found")
+    exit()
 height = image.shape[0]
 width = image.shape[1]
 intensities = (0.299 * image[:, :, 0]) + \
@@ -13,13 +17,13 @@ intensities = (0.299 * image[:, :, 0]) + \
 grayscale_image = np.stack(
     (intensities, intensities, intensities), axis=2).astype(int)
 
-plt.imshow(image)
-plt.axis("off")
-plt.show()
+# plt.imshow(image)
+# plt.axis("off")
+# plt.show()
 
-plt.imshow(grayscale_image)
-plt.axis("off")
-plt.show()
+# plt.imshow(grayscale_image)
+# plt.axis("off")
+# plt.show()
 
 # task 2
 
@@ -30,9 +34,9 @@ gaussian_kernel = np.array([[1, 2, 1],
 blurred_image = pillow_image.filter(
     ImageFilter.Kernel((3, 3), gaussian_kernel.flatten()))
 
-plt.imshow(blurred_image)
-plt.axis("off")
-plt.show()
+# plt.imshow(blurred_image)
+# plt.axis("off")
+# plt.show()
 
 # task 3
 
@@ -50,13 +54,13 @@ gy_numpy = np.array(gy_image)
 g_numpy = np.sqrt(gx_numpy[:, :, 0].astype(np.uint64) **
                   2 + gy_numpy[:, :, 0].astype(np.uint64)**2)
 theta = np.arctan2(gx_numpy[:, :, 0], gy_numpy[:, :, 0])
-plt.imshow(gx_numpy)
-plt.axis("off")
-plt.show()
+# plt.imshow(gx_numpy)
+# plt.axis("off")
+# plt.show()
 
-plt.imshow(gy_numpy)
-plt.axis("off")
-plt.show()
+# plt.imshow(gy_numpy)
+# plt.axis("off")
+# plt.show()
 
 final_gradient = np.maximum(gx_numpy, gy_numpy)
 
@@ -65,9 +69,9 @@ final_gradient = np.maximum(gx_numpy, gy_numpy)
 
 x_vals = np.array([np.arange(width) for _ in range(height)])
 y_vals = np.array([[i]*width for i in range(height)])
-plt.imshow(final_gradient)
-plt.axis("off")
-plt.show()
+# plt.imshow(final_gradient)
+# plt.axis("off")
+# plt.show()
 
 
 def nmsuppression(iy, ix):
@@ -90,9 +94,9 @@ vnmsuppression = np.vectorize(nmsuppression)
 
 vnmsuppression(y_vals, x_vals)
 
-plt.imshow(final_gradient)
-plt.axis("off")
-plt.show()
+# plt.imshow(final_gradient)
+# plt.axis("off")
+# plt.show()
 
 # task 5
 
@@ -120,11 +124,11 @@ vdoublethreshold = np.vectorize(doublethreshold)
 
 vdoublethreshold(y_vals, x_vals)
 
-plt.imshow(final_gradient)
-plt.axis("off")
-plt.show()
+# plt.imshow(final_gradient)
+# plt.axis("off")
+# plt.show()
 
-# task 5
+# task 6
 
 
 def hysteresis(iy, ix):
@@ -146,6 +150,14 @@ vhysteresis = np.vectorize(hysteresis)
 
 vhysteresis(middle_value_y, middle_value_x)
 
+plt.subplot(1, 2, 1)
+plt.imshow(image)
+plt.axis('off')
+plt.title("Before")
+
+plt.subplot(1, 2, 2)
 plt.imshow(final_gradient)
-plt.axis("off")
+plt.axis('off')
+plt.title("After")
+
 plt.show()
