@@ -96,6 +96,9 @@ plt.show()
 
 # task 5
 
+middle_value_x = []
+middle_value_y = []
+
 
 def doublethreshold(iy, ix):
     lower_threshold = 75
@@ -107,6 +110,8 @@ def doublethreshold(iy, ix):
         final_gradient[iy][ix].fill(0)
     elif final_gradient[iy][ix][0] < upper_threshold:
         final_gradient[iy][ix].fill(lower_value)
+        middle_value_x.append(ix)
+        middle_value_y.append(iy)
     else:
         final_gradient[iy][ix].fill(upper_value)
 
@@ -114,6 +119,32 @@ def doublethreshold(iy, ix):
 vdoublethreshold = np.vectorize(doublethreshold)
 
 vdoublethreshold(y_vals, x_vals)
+
+plt.imshow(final_gradient)
+plt.axis("off")
+plt.show()
+
+# task 5
+
+
+def hysteresis(iy, ix):
+    pix = final_gradient[iy][ix]
+    for dir in [[0, -1], [0, 1], [-1, 0], [1, 0]]:
+        new_y = iy+dir[0]
+        new_x = ix+dir[1]
+        if new_y < 0 or height <= new_y or new_x < 0 or width <= new_x:
+            continue
+        new_magnitude = final_gradient[new_y][new_x]
+        if new_magnitude[0] == 255:
+            pix.fill(255)
+            break
+    if pix[0] != 255:
+        pix.fill(0)
+
+
+vhysteresis = np.vectorize(hysteresis)
+
+vhysteresis(middle_value_y, middle_value_x)
 
 plt.imshow(final_gradient)
 plt.axis("off")
